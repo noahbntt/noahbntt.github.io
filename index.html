@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOAHBNTT — Photographe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* ── VARIABLES ── */
+    :root {
+      --bg: #0a0a0a;           /* ← changer ici pour la couleur de fond */
+      --text: #f0ede8;
+      --muted: #555;
+      --accent: #f0ede8;
+      --nav-h: 64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--text);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+    }
+    .cursor.expanded { width: 40px; height: 40px; opacity: 0.15; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 40px;
+      z-index: 100;
+      mix-blend-mode: normal;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      text-decoration: none;
+      margin-right: 120px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 11px;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      height: 28vh;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #111 0%, #0a0a0a 60%, #050505 100%);
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: clamp(40px, 6vw, 80px);
+      line-height: 0.9;
+      letter-spacing: 0.06em;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .hero-sub {
+      margin-top: 20px;
+      color: var(--muted);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 11px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.6s;
+    }
+
+    .hero-line {
+      position: absolute;
+      bottom: 0; left: 40px;
+      width: 1px;
+      height: 80px;
+      background: var(--muted);
+      opacity: 0;
+      animation: growLine 1s ease forwards 1s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes growLine {
+      from { opacity: 0; height: 0; }
+      to   { opacity: 0.4; height: 80px; }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 120px 40px 80px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: #1e1e1e;
+    }
+
+    /* ── GALLERY GRID ── */
+    .gallery {
+      columns: 3;
+      column-gap: 6px;
+    }
+
+    @media (max-width: 900px) { .gallery { columns: 2; } }
+    @media (max-width: 560px) { .gallery { columns: 1; } }
+
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 6px;
+      overflow: hidden;
+      position: relative;
+      cursor: none;
+    }
+
+    .photo-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+      filter: grayscale(10%);
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.03);
+      filter: grayscale(0%);
+    }
+
+    .photo-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 16px 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: var(--text);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .photo-item:hover .photo-caption { opacity: 1; }
+
+    /* ── PLACEHOLDER PHOTOS ── */
+    .placeholder {
+      width: 100%;
+      background: #141414;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #222;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      max-width: 680px;
+    }
+
+    .about-text {
+      line-height: 1.9;
+      color: #888;
+      margin-bottom: 40px;
+    }
+
+    .about-text strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      border: 1px solid #222;
+      padding: 6px 16px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      border-top: 1px solid #1a1a1a;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; } }
+
+    .contact-big {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 1;
+      letter-spacing: 0.06em;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding-top: 8px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .contact-link:hover { color: var(--text); }
+
+    .contact-link::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s;
+    }
+
+    .contact-link:hover::before { width: 36px; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 30px 40px;
+      border-top: 1px solid #141414;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #333;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 24px; right: 32px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: none;
+      transition: color 0.3s;
+    }
+    .lightbox-close:hover { color: var(--text); }
+
+    /* ── NAV ACTIVE indicator ── */
+    .nav-dot {
+      display: inline-block;
+      width: 4px; height: 4px;
+      background: var(--text);
+      border-radius: 50%;
+      margin-left: 6px;
+      vertical-align: middle;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .nav-links a.active .nav-dot { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">Fermer ×</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#athletisme" data-section="athletisme">Athlétisme<span class="nav-dot"></span></a></li>
+      <li><a href="#animaliere" data-section="animaliere">Animalière<span class="nav-dot"></span></a></li>
+      <li><a href="#astrophoto" data-section="astrophoto">Astrophoto<span class="nav-dot"></span></a></li>
+      <li><a href="#paris2024" data-section="paris2024">Paris 2024<span class="nav-dot"></span></a></li>
+      <li><a href="#about" data-section="about">À propos<span class="nav-dot"></span></a></li>
+      <li><a href="#contact" data-section="contact">Contact<span class="nav-dot"></span></a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="hero-line"></div>
+    <h1 class="hero-title">NOAH<br>BNTT</h1>
+    <p class="hero-sub">Photographe · Sport · Nature · Ciel</p>
+  </div>
+
+  <!-- ATHLÉTISME -->
+  <section id="athletisme">
+    <div class="section-header">
+      <span class="section-title">Athlétisme</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-athletisme">
+      <!-- Remplace les src="" par tes vraies photos -->
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:340px;">Ta photo ici</div>
+        <div class="photo-caption">100m — Meeting Paris</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:220px;">Ta photo ici</div>
+        <div class="photo-caption">Haies — Stade Charléty</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:280px;">Ta photo ici</div>
+        <div class="photo-caption">Saut en hauteur</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:200px;">Ta photo ici</div>
+        <div class="photo-caption">Lancer du disque</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:360px;">Ta photo ici</div>
+        <div class="photo-caption">Relais 4×100m</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:240px;">Ta photo ici</div>
+        <div class="photo-caption">Départ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANIMALIÈRE -->
+  <section id="animaliere">
+    <div class="section-header">
+      <span class="section-title">Photo Animalière</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-animaliere">
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:300px;">Ta photo ici</div>
+        <div class="photo-caption">Portrait</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:400px;">Ta photo ici</div>
+        <div class="photo-caption">En vol</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:240px;">Ta photo ici</div>
+        <div class="photo-caption">Faune sauvage</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:320px;">Ta photo ici</div>
+        <div class="photo-caption">Instant</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASTROPHOTO -->
+  <section id="astrophoto">
+    <div class="section-header">
+      <span class="section-title">Astrophotographie</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-astro">
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:380px;">Ta photo ici</div>
+        <div class="photo-caption">Voie Lactée</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:280px;">Ta photo ici</div>
+        <div class="photo-caption">Longue pose</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:200px;">Ta photo ici</div>
+        <div class="photo-caption">Étoiles filantes</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:340px;">Ta photo ici</div>
+        <div class="photo-caption">Lune</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARIS 2024 -->
+  <section id="paris2024">
+    <div class="section-header">
+      <span class="section-title">Paris 2024</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-paris">
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:360px;">Ta photo ici</div>
+        <div class="photo-caption">Cérémonie</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:240px;">Ta photo ici</div>
+        <div class="photo-caption">Athlètes</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:300px;">Ta photo ici</div>
+        <div class="photo-caption">Stade de France</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:220px;">Ta photo ici</div>
+        <div class="photo-caption">Podium</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:380px;">Ta photo ici</div>
+        <div class="photo-caption">Ambiance</div>
+      </div>
+      <div class="photo-item" data-src="">
+        <div class="placeholder" style="height:260px;">Ta photo ici</div>
+        <div class="photo-caption">Coulisses</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-title">À propos</span>
+      <div class="section-line"></div>
+    </div>
+    <p class="about-text">
+      Photographe amateur basé à <strong>Paris</strong>, je me spécialise dans
+      la photographie <strong>sportive</strong> — athlétisme et football —,
+      ainsi que dans la photo <strong>animalière</strong> et
+      l'<strong>astrophotographie</strong>.<br><br>
+      Mon objectif : capturer l'instant, l'effort, la lumière. Ce portfolio
+      rassemble mes meilleures images, réalisées sans accréditation, dans
+      l'attente de couvrir des événements officiels en 2025–2026.
+    </p>
+    <div class="about-tags">
+      <span class="tag">Athlétisme</span>
+      <span class="tag">Football</span>
+      <span class="tag">Photo animalière</span>
+      <span class="tag">Astrophotographie</span>
+      <span class="tag">Paris 2024</span>
+      <span class="tag">Disponible accréditation</span>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-title">Contact</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-big">Travaillons<br>ensemble.</div>
+      <div class="contact-links">
+        <!-- Remplace les href par tes vraies coordonnées -->
+        <a class="contact-link" href="mailto:ton@email.com">ton@email.com</a>
+        <a class="contact-link" href="https://instagram.com/noahbntt" target="_blank">Instagram</a>
+        <a class="contact-link" href="#">Prise de contact</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 NOAHBNTT</span>
+    <span>Paris, France</span>
+  </footer>
+
+  <script>
+    /* ── CURSOR ── */
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .photo-item').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('expanded'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
+    });
+
+    /* ── LIGHTBOX ── */
+    const lightbox = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.photo-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const src = item.getAttribute('data-src');
+        const img = item.querySelector('img');
+        if (src && src.trim() !== '') {
+          lbImg.src = src;
+          lightbox.classList.add('open');
+        } else if (img) {
+          lbImg.src = img.src;
+          lightbox.classList.add('open');
+        }
+      });
+    });
+
+    document.getElementById('lightbox-close').addEventListener('click', () => {
+      lightbox.classList.remove('open');
+      lbImg.src = '';
+    });
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) { lightbox.classList.remove('open'); lbImg.src = ''; }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { lightbox.classList.remove('open'); lbImg.src = ''; }
+    });
+
+    /* ── NAV ACTIVE on scroll ── */
+    const sections = document.querySelectorAll('section[id], div[id="top"]');
+    const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.nav-links a[data-section="${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+
+    /* ── FADE IN on scroll ── */
+    const fadeObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.photo-item').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = `opacity 0.6s ease ${i * 0.05}s, transform 0.6s ease ${i * 0.05}s`;
+      fadeObserver.observe(el);
+    });
+  </script>
+</body>
+</html>
