@@ -1,2 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOAHBNTT — Photographe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* ── VARIABLES ── */
+    :root {
+      --bg: #0a0a0a;           /* ← changer ici pour la couleur de fond */
+      --text: #f0ede8;
+      --muted: #555;
+      --accent: #f0ede8;
+      --nav-h: 64px;
+    }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--text);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+    }
+    .cursor.expanded { width: 40px; height: 40px; opacity: 0.15; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 40px;
+      z-index: 100;
+      mix-blend-mode: normal;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      text-decoration: none;
+      margin-right: 120px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 11px;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      height: 50vh;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: #000;
+    }
+
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      background-image: url('photos/hero.jpg'); /* ← remplace par ton image de banderole */
+      background-size: cover;
+      background-position: center;
+      opacity: 0.3;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: clamp(60px, 7vw, 85px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .hero-sub {
+      margin-top: 14px;
+      color: var(--muted);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 11px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.6s;
+    }
+
+    .hero-line {
+      position: absolute;
+      bottom: 0; left: 40px;
+      width: 1px;
+      height: 80px;
+      background: var(--muted);
+      opacity: 0;
+      animation: growLine 1s ease forwards 1s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes growLine {
+      from { opacity: 0; height: 0; }
+      to   { opacity: 0.4; height: 80px; }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 120px 40px 80px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: #1e1e1e;
+    }
+
+    /* ── GALLERY GRID ── */
+    .gallery {
+      columns: 3;
+      column-gap: 6px;
+    }
+
+    @media (max-width: 900px) { .gallery { columns: 2; } }
+    @media (max-width: 560px) { .gallery { columns: 1; } }
+
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 6px;
+      overflow: hidden;
+      position: relative;
+      cursor: none;
+    }
+
+    .photo-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+      filter: grayscale(10%);
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.03);
+      filter: grayscale(0%);
+    }
+
+    .photo-caption { display: none; }
+
+    /* ── PLACEHOLDER PHOTOS ── */
+    .placeholder {
+      width: 100%;
+      background: #141414;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #222;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      max-width: 680px;
+    }
+
+    .about-text {
+      line-height: 1.9;
+      color: #888;
+      margin-bottom: 40px;
+    }
+
+    .about-text strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      border: 1px solid #222;
+      padding: 6px 16px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      border-top: 1px solid #1a1a1a;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; } }
+
+    .contact-big {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 1;
+      letter-spacing: 0.06em;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding-top: 8px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .contact-link:hover { color: var(--text); }
+
+    .contact-link::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s;
+    }
+
+    .contact-link:hover::before { width: 36px; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 30px 40px;
+      border-top: 1px solid #141414;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #333;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 24px; right: 32px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: none;
+      transition: color 0.3s;
+    }
+    .lightbox-close:hover { color: var(--text); }
+
+    /* ── NAV ACTIVE indicator ── */
+    .nav-dot {
+      display: inline-block;
+      width: 4px; height: 4px;
+      background: var(--text);
+      border-radius: 50%;
+      margin-left: 6px;
+      vertical-align: middle;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .nav-links a.active .nav-dot { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">Close ×</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#trackfield" data-section="trackfield">Track & Field<span class="nav-dot"></span></a></li>
+      <li><a href="#running" data-section="running">Running<span class="nav-dot"></span></a></li>
+      <li><a href="#paris2024" data-section="paris2024">Paris 2024<span class="nav-dot"></span></a></li>
+      <li><a href="#astrophoto" data-section="astrophoto">Astrophotography<span class="nav-dot"></span></a></li>
+      <li><a href="#about" data-section="about">About<span class="nav-dot"></span></a></li>
+      <li><a href="#contact" data-section="contact">Contact<span class="nav-dot"></span></a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="hero-bg-img"></div>
+    <h1 class="hero-title">NOAHBNTT</h1>
+    <p class="hero-sub">Photographer · Track & Field · Running · Astrophotography</p>
+  </div>
+
+  <!-- TRACK & FIELD -->
+  <section id="trackfield">
+    <div class="section-header">
+      <span class="section-title">Track & Field</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-trackfield">
+      <div class="photo-item" data-src="photos/trackfield/photo-1.jpg"><img src="photos/trackfield/photo-1.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_3040.jpg"><img src="photos/trackfield/IMG_3040.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0563.jpg"><img src="photos/trackfield/IMG_0563.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0114.jpg"><img src="photos/trackfield/IMG_0114.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0144.jpg"><img src="photos/trackfield/IMG_0144.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_6658.jpg"><img src="photos/trackfield/IMG_6658.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0591.jpg"><img src="photos/trackfield/IMG_0591.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0633.jpg"><img src="photos/trackfield/IMG_0633.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0141.jpg"><img src="photos/trackfield/IMG_0141.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0369.jpg"><img src="photos/trackfield/IMG_0369.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0541.jpg"><img src="photos/trackfield/IMG_0541.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_9922.jpg"><img src="photos/trackfield/IMG_9922.jpg" alt="Track & Field" /></div>
+    </div>
+  </section>
+
+  <!-- RUNNING -->
+  <section id="running">
+    <div class="section-header">
+      <span class="section-title">Running</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-running">
+      <div class="photo-item" data-src="photos/running/IMG_1215.jpg"><img src="photos/running/IMG_1215.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_9684.jpg"><img src="photos/running/IMG_9684.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_9591.jpg"><img src="photos/running/IMG_9591.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_9631.jpg"><img src="photos/running/IMG_9631.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_9672.jpg"><img src="photos/running/IMG_9672.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_0252.jpg"><img src="photos/running/IMG_0252.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_91111.jpg"><img src="photos/running/IMG_91111.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_9169.jpg"><img src="photos/running/IMG_9169.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_1246.jpg"><img src="photos/running/IMG_1246.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_9747.jpg"><img src="photos/running/IMG_9747.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_6251.jpg"><img src="photos/running/IMG_6251.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_9648.jpg"><img src="photos/running/IMG_9648.jpg" alt="Running" /></div>
+    </div>
+  </section>
+
+  <!-- PARIS 2024 -->
+  <section id="paris2024">
+    <div class="section-header">
+      <span class="section-title">Paris 2024</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-paris">
+      <div class="photo-item" data-src="photos/paris2024/IMG_2107.jpg"><img src="photos/paris2024/IMG_2107.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_8705.jpg"><img src="photos/paris2024/IMG_8705.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_4915.jpg"><img src="photos/paris2024/IMG_4915.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3768.jpg"><img src="photos/paris2024/IMG_3768.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3889.jpg"><img src="photos/paris2024/IMG_3889.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3732.jpg"><img src="photos/paris2024/IMG_3732.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_8696.jpg"><img src="photos/paris2024/IMG_8696.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_5076.jpg"><img src="photos/paris2024/IMG_5076.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_6500.jpg"><img src="photos/paris2024/IMG_6500.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3882.jpg"><img src="photos/paris2024/IMG_3882.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_6880.jpg"><img src="photos/paris2024/IMG_6880.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_8689.jpg"><img src="photos/paris2024/IMG_8689.jpg" alt="Paris 2024" /></div>
+    </div>
+  </section>
+
+  <!-- ASTROPHOTOGRAPHY -->
+  <section id="astrophoto">
+    <div class="section-header">
+      <span class="section-title">Astrophotography</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery" id="gallery-astro">
+      <div class="photo-item" data-src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg"><img src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_0686.jpg"><img src="photos/astrophoto/IMG_0686.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_2805.jpg"><img src="photos/astrophoto/IMG_2805.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_2777.jpg"><img src="photos/astrophoto/IMG_2777.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_0668.jpg"><img src="photos/astrophoto/IMG_0668.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/voielactee.jpg"><img src="photos/astrophoto/voielactee.jpg" alt="Voie Lactée" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/eclipse2.jpg"><img src="photos/astrophoto/eclipse2.jpg" alt="Éclipse" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/pleiades4.jpg"><img src="photos/astrophoto/pleiades4.jpg" alt="Pléiades" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/c2022_e3_ztf.jpg"><img src="photos/astrophoto/c2022_e3_ztf.jpg" alt="Comète C/2022 E3 ZTF" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/themarkarianschain.jpg"><img src="photos/astrophoto/themarkarianschain.jpg" alt="Markarian's Chain" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/heartnebula.jpg"><img src="photos/astrophoto/heartnebula.jpg" alt="Heart Nebula" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/ngc7000.jpg"><img src="photos/astrophoto/ngc7000.jpg" alt="NGC 7000" /></div>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-title">About</span>
+      <div class="section-line"></div>
+    </div>
+    <p class="about-text">
+      Amateur photographer based in <strong>Paris</strong>, specializing in
+      <strong>track & field</strong> and <strong>road running</strong>
+      photography, as well as <strong>astrophotography</strong>.<br><br>
+      My goal: capture the moment, the effort, the light. This portfolio brings
+      together my best images, shot without press accreditation, as I work toward
+      covering official events in 2025–2026.
+    </p>
+    <div class="about-tags">
+      <span class="tag">Track & Field</span>
+      <span class="tag">Running</span>
+      <span class="tag">Astrophotography</span>
+      <span class="tag">Paris 2024</span>
+      <span class="tag">Available for accreditation</span>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-title">Contact</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-big">Let's work<br>together.</div>
+      <div class="contact-links">
+        <!-- Remplace les href par tes vraies coordonnées -->
+        <a class="contact-link" href="mailto:ton@email.com">ton@email.com</a>
+        <a class="contact-link" href="https://instagram.com/noahbntt" target="_blank">Instagram</a>
+        <a class="contact-link" href="#">Prise de contact</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 NOAHBNTT</span>
+    <span>Paris, France</span>
+  </footer>
+
+  <script>
+    /* ── CURSOR ── */
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .photo-item').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('expanded'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
+    });
+
+    /* ── LIGHTBOX ── */
+    const lightbox = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.photo-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const src = item.getAttribute('data-src');
+        const img = item.querySelector('img');
+        if (src && src.trim() !== '') {
+          lbImg.src = src;
+          lightbox.classList.add('open');
+        } else if (img) {
+          lbImg.src = img.src;
+          lightbox.classList.add('open');
+        }
+      });
+    });
+
+    document.getElementById('lightbox-close').addEventListener('click', () => {
+      lightbox.classList.remove('open');
+      lbImg.src = '';
+    });
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) { lightbox.classList.remove('open'); lbImg.src = ''; }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { lightbox.classList.remove('open'); lbImg.src = ''; }
+    });
+
+    /* ── NAV ACTIVE on scroll ── */
+    const sections = document.querySelectorAll('section[id], div[id="top"]');
+    const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.nav-links a[data-section="${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+
+    /* ── FADE IN on scroll ── */
+    const fadeObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.photo-item').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = `opacity 0.6s ease ${i * 0.05}s, transform 0.6s ease ${i * 0.05}s`;
+      fadeObserver.observe(el);
+    });
+  </script>
+</body>
+</html>
 
