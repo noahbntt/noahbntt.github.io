@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* ── VARIABLES ── */
     :root {
       --bg: #0a0a0a;
       --text: #f0ede8;
@@ -37,11 +36,11 @@
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
     }
     .cursor.expanded { width: 40px; height: 40px; opacity: 0.15; }
 
-    /* ── NAV ── */
+    /* ── NAV desktop ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -50,15 +49,18 @@
       align-items: center;
       justify-content: center;
       padding: 0 24px;
-      z-index: 100;
+      z-index: 200;
+      /* Frame lisible : fond sombre semi-transparent + blur */
+      background: rgba(10, 10, 10, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
     .nav-links {
       display: flex;
       gap: 28px;
       list-style: none;
-      flex-wrap: wrap;
-      justify-content: center;
     }
 
     .nav-links a {
@@ -84,12 +86,106 @@
     }
     .nav-links a.active .nav-dot { opacity: 1; }
 
-    /* ── HERO : deux bandes ── */
-    .hero { display: flex; flex-direction: column; padding-top: var(--nav-h); }
+    /* ── NAV mobile ── */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 200;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
 
-    /* Bande 1 : fond blanc, nom en noir */
+    .nav-mobile-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Overlay menu mobile */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.97);
+      z-index: 190;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+    }
+
+    .mobile-menu a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      padding-top: var(--nav-h);
+      position: relative;
+    }
+
+    /* Image hero partagée entre les deux bandes */
+    .hero-bg-shared {
+      position: absolute;
+      inset: 0;
+      background-image: url('photos/hero.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    /* Bande 1 : fond blanc + image hero 30% */
     .hero-top {
-      background: #fff;
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.85);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -106,36 +202,24 @@
       color: #000;
     }
 
-    /* Bande 2 : fond noir + image hero 30% + texte blanc modifiable */
+    /* Bande 2 : fond noir + image hero 30% */
     .hero-bottom {
       position: relative;
-      background: #000;
+      z-index: 1;
+      background: rgba(0,0,0,0.75);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px 24px;
-      overflow: hidden;
       min-height: 70px;
     }
 
-    .hero-bg-img {
-      position: absolute;
-      inset: 0;
-      background-image: url('photos/hero.jpg');
-      background-size: cover;
-      background-position: center;
-      opacity: 0.3;
-    }
-
     .hero-sub {
-      position: relative;
-      z-index: 1;
       color: #fff;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       font-size: 11px;
       text-align: center;
-      /* ← modifie ce texte dans le HTML */
     }
 
     /* ── SECTIONS ── */
@@ -150,13 +234,13 @@
 
     .section-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      color: var(--muted);
+      font-size: 22px;           /* ← agrandi */
+      letter-spacing: 0.18em;
+      color: var(--text);
       text-transform: uppercase;
     }
 
-    .section-line { flex: 1; height: 1px; background: #1e1e1e; }
+    .section-line { flex: 1; height: 1px; background: #1e1e1e; align-self: center; }
 
     /* ── GALLERY ── */
     .gallery { columns: 4; column-gap: 12px; }
@@ -165,7 +249,6 @@
       break-inside: avoid;
       margin-bottom: 12px;
       overflow: hidden;
-      position: relative;
       cursor: none;
     }
 
@@ -181,11 +264,9 @@
 
     /* ── ABOUT ── */
     #about { max-width: 680px; }
-
     .about-text { line-height: 1.9; color: #888; margin-bottom: 40px; }
     .about-text strong { color: var(--text); font-weight: 400; }
     .about-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-
     .tag {
       border: 1px solid #222;
       padding: 6px 16px;
@@ -197,41 +278,25 @@
 
     /* ── CONTACT ── */
     #contact { border-top: 1px solid #1a1a1a; }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: start;
-    }
-
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
     .contact-big {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(36px, 6vw, 72px);
       line-height: 1;
       letter-spacing: 0.06em;
     }
-
     .contact-links { display: flex; flex-direction: column; gap: 18px; padding-top: 8px; }
-
     .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      transition: color 0.3s;
+      display: flex; align-items: center; gap: 14px;
+      color: var(--muted); text-decoration: none;
+      font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; transition: color 0.3s;
     }
     .contact-link:hover { color: var(--text); }
     .contact-link::before {
-      content: '';
-      display: inline-block;
+      content: ''; display: inline-block;
       width: 20px; height: 1px;
-      background: currentColor;
-      transition: width 0.3s;
+      background: currentColor; transition: width 0.3s;
     }
     .contact-link:hover::before { width: 36px; }
 
@@ -239,26 +304,18 @@
     footer {
       padding: 24px 80px;
       border-top: 1px solid #141414;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #333;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      display: flex; justify-content: space-between; align-items: center;
+      color: #333; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
     }
 
     /* ── LIGHTBOX ── */
     .lightbox {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.95);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
+      z-index: 300;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
     }
     .lightbox.open { opacity: 1; pointer-events: all; }
     .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
@@ -266,8 +323,7 @@
       position: absolute; top: 24px; right: 32px;
       color: var(--muted); font-size: 11px;
       letter-spacing: 0.2em; text-transform: uppercase;
-      background: none; border: none; cursor: none;
-      transition: color 0.3s;
+      background: none; border: none; cursor: none; transition: color 0.3s;
     }
     .lightbox-close:hover { color: var(--text); }
 
@@ -275,16 +331,15 @@
     @media (max-width: 768px) {
       body { cursor: auto; }
       .cursor { display: none; }
+      nav { display: none; }
+      .nav-mobile { display: flex; }
 
-      nav { height: auto; padding: 10px 16px; position: relative; }
-      .nav-links { gap: 12px; }
-      .nav-links a { font-size: 9px; letter-spacing: 0.08em; }
-
-      .hero { padding-top: 0; }
+      .hero { padding-top: var(--nav-h); }
       .hero-title { font-size: clamp(32px, 10vw, 56px); }
       .hero-sub { font-size: 9px; letter-spacing: 0.1em; }
 
       section { padding: 60px 20px 40px; }
+      .section-title { font-size: 18px; }
       .gallery { columns: 2; column-gap: 8px; }
       .photo-item { margin-bottom: 8px; }
 
@@ -293,7 +348,6 @@
     }
 
     @media (max-width: 420px) {
-      .nav-links { gap: 8px; }
       .gallery { columns: 1; }
     }
   </style>
@@ -307,6 +361,7 @@
     <img id="lightbox-img" src="" alt="" />
   </div>
 
+  <!-- NAV desktop -->
   <nav>
     <ul class="nav-links">
       <li><a href="#trackfield" data-section="trackfield">Track & Field<span class="nav-dot"></span></a></li>
@@ -318,24 +373,44 @@
     </ul>
   </nav>
 
+  <!-- NAV mobile -->
+  <div class="nav-mobile">
+    <a class="nav-mobile-logo" href="#top">NOAHBNTT</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- MENU overlay mobile -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#trackfield" class="mobile-link">Track & Field</a>
+    <a href="#running" class="mobile-link">Running</a>
+    <a href="#paris2024" class="mobile-link">Paris 2024</a>
+    <a href="#astrophoto" class="mobile-link">Astrophotography</a>
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+  </div>
+
+  <!-- HERO -->
   <div class="hero" id="top">
+    <div class="hero-bg-shared"></div>
     <div class="hero-top">
       <h1 class="hero-title">NOAHBNTT</h1>
     </div>
     <div class="hero-bottom">
-      <div class="hero-bg-img"></div>
       <p class="hero-sub">Texte à modifier</p>
     </div>
   </div>
 
+  <!-- TRACK & FIELD -->
   <section id="trackfield">
     <div class="section-header">
       <span class="section-title">Track & Field</span>
       <div class="section-line"></div>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/trackfield/photo-5.jpg"><img src="photos/trackfield/photo-5.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0340.jpg"><img src="photos/trackfield/IMG_0340.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/photo-1.jpg"><img src="photos/trackfield/photo-1.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_3040.jpg"><img src="photos/trackfield/IMG_3040.jpg" alt="Track & Field" /></div>
       <div class="photo-item" data-src="photos/trackfield/IMG_0563.jpg"><img src="photos/trackfield/IMG_0563.jpg" alt="Track & Field" /></div>
       <div class="photo-item" data-src="photos/trackfield/IMG_0114.jpg"><img src="photos/trackfield/IMG_0114.jpg" alt="Track & Field" /></div>
       <div class="photo-item" data-src="photos/trackfield/IMG_0144.jpg"><img src="photos/trackfield/IMG_0144.jpg" alt="Track & Field" /></div>
@@ -349,6 +424,7 @@
     </div>
   </section>
 
+  <!-- RUNNING -->
   <section id="running">
     <div class="section-header">
       <span class="section-title">Running</span>
@@ -370,6 +446,7 @@
     </div>
   </section>
 
+  <!-- PARIS 2024 -->
   <section id="paris2024">
     <div class="section-header">
       <span class="section-title">Paris 2024</span>
@@ -391,6 +468,7 @@
     </div>
   </section>
 
+  <!-- ASTROPHOTOGRAPHY -->
   <section id="astrophoto">
     <div class="section-header">
       <span class="section-title">Astrophotography</span>
@@ -412,6 +490,7 @@
     </div>
   </section>
 
+  <!-- ABOUT -->
   <section id="about">
     <div class="section-header">
       <span class="section-title">About</span>
@@ -434,6 +513,7 @@
     </div>
   </section>
 
+  <!-- CONTACT -->
   <section id="contact">
     <div class="section-header">
       <span class="section-title">Contact</span>
@@ -455,6 +535,7 @@
   </footer>
 
   <script>
+    /* ── CURSOR ── */
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', e => {
       cursor.style.left = e.clientX + 'px';
@@ -465,6 +546,32 @@
       el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
     });
 
+    /* ── HAMBURGER ── */
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.contains('open');
+      if (isOpen) {
+        mobileMenu.classList.remove('open');
+        mobileMenu.style.display = 'none';
+        hamburger.classList.remove('open');
+      } else {
+        mobileMenu.style.display = 'flex';
+        requestAnimationFrame(() => mobileMenu.classList.add('open'));
+        hamburger.classList.add('open');
+      }
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        mobileMenu.style.display = 'none';
+        hamburger.classList.remove('open');
+      });
+    });
+
+    /* ── LIGHTBOX ── */
     const lightbox = document.getElementById('lightbox');
     const lbImg    = document.getElementById('lightbox-img');
 
@@ -490,6 +597,7 @@
       if (e.key === 'Escape') { lightbox.classList.remove('open'); lbImg.src = ''; }
     });
 
+    /* ── NAV ACTIVE on scroll ── */
     const navLinks = document.querySelectorAll('.nav-links a[data-section]');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -502,6 +610,7 @@
     }, { threshold: 0.3 });
     document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
 
+    /* ── FADE IN on scroll ── */
     const fadeObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
