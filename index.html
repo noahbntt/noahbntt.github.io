@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NOAHBNTT — Photographe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300;400&family=Bricolage+Grotesque:wght@300;400;500&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0a0a0a;
@@ -177,8 +177,7 @@
       background-image: url('photos/hero.jpg');
       background-size: cover;
       background-position: center;
-      opacity: 0.3;
-      z-index: 0;
+      opacity: 0.5;
     }
 
     /* Bande 1 : fond blanc + image hero 30% */
@@ -193,12 +192,12 @@
     }
 
     .hero-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-weight: 400;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
       text-transform: uppercase;
-      font-size: clamp(48px, 7vw, 85px);
+      font-size: clamp(60px, 10vw, 130px);
       line-height: 1;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.04em;
       color: #000;
     }
 
@@ -215,10 +214,12 @@
     }
 
     .hero-sub {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 400;
       color: #fff;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: none;
+      font-size: 13px;
       text-align: center;
     }
 
@@ -335,7 +336,7 @@
       .nav-mobile { display: flex; }
 
       .hero { padding-top: var(--nav-h); }
-      .hero-title { font-size: clamp(32px, 10vw, 56px); }
+      .hero-title { font-size: clamp(36px, 11vw, 60px); }
       .hero-sub { font-size: 9px; letter-spacing: 0.1em; }
 
       section { padding: 60px 20px 40px; }
@@ -409,8 +410,8 @@
       <div class="section-line"></div>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/trackfield/photo-5.jpg"><img src="photos/trackfield/photo-5.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0340.jpg"><img src="photos/trackfield/IMG_0340.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/photo-1.jpg"><img src="photos/trackfield/photo-1.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_3040.jpg"><img src="photos/trackfield/IMG_3040.jpg" alt="Track & Field" /></div>
       <div class="photo-item" data-src="photos/trackfield/IMG_0563.jpg"><img src="photos/trackfield/IMG_0563.jpg" alt="Track & Field" /></div>
       <div class="photo-item" data-src="photos/trackfield/IMG_0114.jpg"><img src="photos/trackfield/IMG_0114.jpg" alt="Track & Field" /></div>
       <div class="photo-item" data-src="photos/trackfield/IMG_0144.jpg"><img src="photos/trackfield/IMG_0144.jpg" alt="Track & Field" /></div>
