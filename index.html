@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NOAHBNTT — Photographe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Bricolage+Grotesque:wdth,wght@75..100,200..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Bricolage+Grotesque:wdth,wght@75..100,200..800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
     /* ── PALETTE VERTE VINTAGE ── */
     :root {
@@ -33,14 +33,14 @@
       cursor: none;
     }
 
-    /* ── BRUIT DE FOND (noise) ── */
+    /* ── BRUIT DE FOND (noise) ACCENTUÉ ── */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.045;
+      opacity: 0.15; /* Augmenté pour un effet de grain texturé visible et pro */
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-repeat: repeat;
       background-size: 180px;
@@ -124,7 +124,8 @@
     }
 
     .nav-mobile-logo {
-      font-family: 'DM Serif Display', serif;
+      font-family: 'Syne', sans-serif; /* Remplacement par Syne pour uniformiser sur mobile */
+      font-weight: 800;
       font-size: 18px;
       letter-spacing: 0.04em;
       color: var(--cream);
@@ -186,17 +187,17 @@
       background: var(--white-top);
       display: flex;
       align-items: center; justify-content: center;
-      padding: 6px 24px;
+      padding: 12px 24px; /* légèrement augmenté pour laisser respirer la nouvelle police */
     }
 
     .hero-title {
-      font-family: 'DM Serif Display', serif;
-      font-weight: 400;
-      font-style: italic;
-      font-size: clamp(32px, 5vw, 64px);
+      font-family: 'Syne', sans-serif; /* Utilisation de Syne pour un look moderne & pro */
+      font-weight: 800;
+      font-size: clamp(32px, 5.5vw, 68px);
       line-height: 1;
-      letter-spacing: 0.02em;
+      letter-spacing: -0.02em; /* Léger resserrement moderne */
       color: #1a1f1a;
+      text-transform: uppercase;
     }
 
     /* Bande 2 : vert sombre semi-transparent */
@@ -382,7 +383,6 @@
     <img id="lightbox-img" src="" alt="" />
   </div>
 
-  <!-- NAV desktop -->
   <nav>
     <ul class="nav-links">
       <li><a href="#trackfield" data-section="trackfield">Track & Field<span class="nav-dot"></span></a></li>
@@ -394,7 +394,6 @@
     </ul>
   </nav>
 
-  <!-- NAV mobile -->
   <div class="nav-mobile">
     <a class="nav-mobile-logo" href="#top">NOAHBNTT</a>
     <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -402,7 +401,6 @@
     </button>
   </div>
 
-  <!-- MENU overlay mobile -->
   <div class="mobile-menu" id="mobile-menu">
     <a href="#trackfield" class="mobile-link">Track & Field</a>
     <a href="#running" class="mobile-link">Running</a>
@@ -412,7 +410,6 @@
     <a href="#contact" class="mobile-link">Contact</a>
   </div>
 
-  <!-- HERO -->
   <div class="hero" id="top">
     <div class="hero-bg-shared"></div>
     <div class="hero-top">
@@ -423,7 +420,6 @@
     </div>
   </div>
 
-  <!-- TRACK & FIELD -->
   <section id="trackfield">
     <div class="section-header">
       <span class="section-title">Track & Field</span>
@@ -445,7 +441,6 @@
     </div>
   </section>
 
-  <!-- RUNNING -->
   <section id="running">
     <div class="section-header">
       <span class="section-title">Running</span>
@@ -467,7 +462,6 @@
     </div>
   </section>
 
-  <!-- PARIS 2024 -->
   <section id="paris2024">
     <div class="section-header">
       <span class="section-title">Paris 2024</span>
@@ -489,7 +483,6 @@
     </div>
   </section>
 
-  <!-- ASTROPHOTOGRAPHY -->
   <section id="astrophoto">
     <div class="section-header">
       <span class="section-title">Astrophotography</span>
@@ -511,7 +504,6 @@
     </div>
   </section>
 
-  <!-- ABOUT -->
   <section id="about">
     <div class="section-header">
       <span class="section-title">About</span>
@@ -534,7 +526,6 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section id="contact">
     <div class="section-header">
       <span class="section-title">Contact</span>
