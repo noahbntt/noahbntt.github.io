@@ -16,7 +16,7 @@
       --green-lt:  #7a9e74;   /* vert clair */
       --cream:     #e8e2d4;   /* crème — texte principal */
       --muted:     #7a8a76;   /* texte secondaire */
-      --white-top: rgba(232, 226, 212, 0.65); /* MODIFIÉ : opacité réduite (0.92 -> 0.65) */
+      --white-top: rgba(232, 226, 212, 0.65); /* MODIFIÉ : Opacité de la bande blanche baissée */
       --nav-h:     64px;       /* Augmenté légèrement pour accueillir la plus grande police du menu */
     }
 
@@ -76,8 +76,8 @@
       padding: 0 32px;
       z-index: 200;
       background: rgba(26, 31, 26, 0.82);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(4px); /* MODIFIÉ : Flou de la banderole diminué (12px -> 4px) */
+      -webkit-backdrop-filter: blur(4px); /* MODIFIÉ : Flou de la banderole diminué (12px -> 4px) */
       border-bottom: 1px solid rgba(74, 107, 74, 0.25);
     }
 
@@ -118,8 +118,8 @@
       padding: 0 20px;
       z-index: 200;
       background: rgba(26, 31, 26, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(4px); /* MODIFIÉ : Flou sur mobile également harmonisé */
+      -webkit-backdrop-filter: blur(4px);
       border-bottom: 1px solid rgba(74, 107, 74, 0.2);
     }
 
@@ -289,12 +289,12 @@
     .photo-item:hover img { transform: scale(1.03); filter: grayscale(0%) saturate(1.05); }
     .photo-caption { display: none; }
 
-    /* ── ABOUT (Ajout container Flexbox pour la photo de profil) ── */
+    /* ── ABOUT (Agencé pour accueillir la photo) ── */
     .about-container {
       display: flex;
       gap: 40px;
       align-items: flex-start;
-      max-width: 900px;
+      max-width: 960px;
     }
 
     .about-photo {
@@ -310,7 +310,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: grayscale(5%) saturate(0.9);
+      filter: grayscale(5%) saturate(0.95);
     }
 
     .about-details {
@@ -447,10 +447,10 @@
 
   <nav>
     <ul class="nav-links">
-      <li><a href="#trackfield" data-section="trackfield">Athlétisme<span class="nav-dot"></span></a></li>
+      <li><a href="#trackfield" data-section="trackfield">Track & Field<span class="nav-dot"></span></a></li>
       <li><a href="#running" data-section="running">Running<span class="nav-dot"></span></a></li>
       <li><a href="#paris2024" data-section="paris2024">Paris 2024<span class="nav-dot"></span></a></li>
-      <li><a href="#astrophoto" data-section="astrophoto">Astrophotographie<span class="nav-dot"></span></a></li>
+      <li><a href="#astrophoto" data-section="astrophoto">Astrophotography<span class="nav-dot"></span></a></li>
       <li><a href="#about" data-section="about">À propos<span class="nav-dot"></span></a></li>
       <li><a href="#contact" data-section="contact">Contact<span class="nav-dot"></span></a></li>
     </ul>
@@ -464,10 +464,10 @@
   </div>
 
   <div class="mobile-menu" id="mobile-menu">
-    <a href="#trackfield" class="mobile-link">Athlétisme</a>
+    <a href="#trackfield" class="mobile-link">Track & Field</a>
     <a href="#running" class="mobile-link">Running</a>
     <a href="#paris2024" class="mobile-link">Paris 2024</a>
-    <a href="#astrophoto" class="mobile-link">Astrophotographie</a>
+    <a href="#astrophoto" class="mobile-link">Astrophotography</a>
     <a href="#about" class="mobile-link">À propos</a>
     <a href="#contact" class="mobile-link">Contact</a>
   </div>
@@ -494,22 +494,22 @@
 
   <section id="trackfield">
     <div class="section-header">
-      <span class="section-title">Athlétisme</span>
+      <span class="section-title">Track & Field</span>
       <div class="section-line"></div>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/trackfield/photo-5.jpg"><img src="photos/trackfield/photo-5.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0340.jpg"><img src="photos/trackfield/IMG_0340.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0563.jpg"><img src="photos/trackfield/IMG_0563.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0114.jpg"><img src="photos/trackfield/IMG_0114.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0144.jpg"><img src="photos/trackfield/IMG_0144.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_6658.jpg"><img src="photos/trackfield/IMG_6658.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0591.jpg"><img src="photos/trackfield/IMG_0591.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0633.jpg"><img src="photos/trackfield/IMG_0633.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0141.jpg"><img src="photos/trackfield/IMG_0141.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0369.jpg"><img src="photos/trackfield/IMG_0369.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0541.jpg"><img src="photos/trackfield/IMG_0541.jpg" alt="Athlétisme" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_9922.jpg"><img src="photos/trackfield/IMG_9922.jpg" alt="Athlétisme" /></div>
+      <div class="photo-item" data-src="photos/trackfield/photo-5.jpg"><img src="photos/trackfield/photo-5.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0340.jpg"><img src="photos/trackfield/IMG_0340.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0563.jpg"><img src="photos/trackfield/IMG_0563.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0114.jpg"><img src="photos/trackfield/IMG_0114.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0144.jpg"><img src="photos/trackfield/IMG_0144.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_6658.jpg"><img src="photos/trackfield/IMG_6658.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0591.jpg"><img src="photos/trackfield/IMG_0591.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0633.jpg"><img src="photos/trackfield/IMG_0633.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0141.jpg"><img src="photos/trackfield/IMG_0141.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0369.jpg"><img src="photos/trackfield/IMG_0369.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0541.jpg"><img src="photos/trackfield/IMG_0541.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_9922.jpg"><img src="photos/trackfield/IMG_9922.jpg" alt="Track & Field" /></div>
     </div>
   </section>
 
@@ -557,15 +557,15 @@
 
   <section id="astrophoto">
     <div class="section-header">
-      <span class="section-title">Astrophotographie</span>
+      <span class="section-title">Astrophotography</span>
       <div class="section-line"></div>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg"><img src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg" alt="Astrophotographie" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_0686.jpg"><img src="photos/astrophoto/IMG_0686.jpg" alt="Astrophotographie" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_2805.jpg"><img src="photos/astrophoto/IMG_2805.jpg" alt="Astrophotographie" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_2777.jpg"><img src="photos/astrophoto/IMG_2777.jpg" alt="Astrophotographie" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_0668.jpg"><img src="photos/astrophoto/IMG_0668.jpg" alt="Astrophotographie" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg"><img src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_0686.jpg"><img src="photos/astrophoto/IMG_0686.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_2805.jpg"><img src="photos/astrophoto/IMG_2805.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_2777.jpg"><img src="photos/astrophoto/IMG_2777.jpg" alt="Astrophotography" /></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_0668.jpg"><img src="photos/astrophoto/IMG_0668.jpg" alt="Astrophotography" /></div>
       <div class="photo-item" data-src="photos/astrophoto/voielactée (1).jpg"><img src="photos/astrophoto/voielactee.jpg" alt="Voie Lactée" /></div>
       <div class="photo-item" data-src="photos/astrophoto/éclipse2 (2).jpg"><img src="photos/astrophoto/eclipse2.jpg" alt="Éclipse" /></div>
       <div class="photo-item" data-src="photos/astrophoto/pléiades4.jpg"><img src="photos/astrophoto/pleiades4.jpg" alt="Pléiades" /></div>
@@ -581,7 +581,6 @@
       <span class="section-title">À propos</span>
       <div class="section-line"></div>
     </div>
-    
     <div class="about-container">
       <div class="about-photo">
         <img src="photos/noah.jpg" alt="Noah" />
@@ -614,110 +613,4 @@
           Une idée de projet, besoin de visuels sur une course ou envie d'échanger sur mes photographies réalisées entre 2024 et 2026 ? Contactez-moi :
         </p>
         <a class="contact-link" href="mailto:noah.bonnet78@gmail.com">noah.bonnet78@gmail.com</a>
-        <a class="contact-link" href="https://instagram.com/noahbntt" target="_blank">Instagram</a>
-        <a class="contact-link" href="#">Prise de contact</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <span>© 2026 NOAHBNTT</span>
-    <span>Paris, France</span>
-  </footer>
-
-  <script>
-    /* ── CURSOR ── */
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
-    });
-    document.querySelectorAll('a, button, .photo-item, .hero-socials-left a').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('expanded'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
-    });
-
-    /* ── HAMBURGER ── */
-    const hamburger  = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    hamburger.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.contains('open');
-      if (isOpen) {
-        mobileMenu.classList.remove('open');
-        mobileMenu.style.display = 'none';
-        hamburger.classList.remove('open');
-      } else {
-        mobileMenu.style.display = 'flex';
-        requestAnimationFrame(() => mobileMenu.classList.add('open'));
-        hamburger.classList.add('open');
-      }
-    });
-
-    document.querySelectorAll('.mobile-link').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        mobileMenu.style.display = 'none';
-        hamburger.classList.remove('open');
-      });
-    });
-
-    /* ── LIGHTBOX ── */
-    const lightbox = document.getElementById('lightbox');
-    const lbImg    = document.getElementById('lightbox-img');
-
-    document.querySelectorAll('.photo-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const src = item.getAttribute('data-src');
-        const img = item.querySelector('img');
-        if (src && src.trim() !== '') {
-          lbImg.src = src; lightbox.classList.add('open');
-        } else if (img) {
-          lbImg.src = img.src; lightbox.classList.add('open');
-        }
-      });
-    });
-
-    document.getElementById('lightbox-close').addEventListener('click', () => {
-      lightbox.classList.remove('open'); lbImg.src = '';
-    });
-    lightbox.addEventListener('click', e => {
-      if (e.target === lightbox) { lightbox.classList.remove('open'); lbImg.src = ''; }
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { lightbox.classList.remove('open'); lbImg.src = ''; }
-    });
-
-    /* ── NAV ACTIVE on scroll ── */
-    const navLinks = document.querySelectorAll('.nav-links a[data-section]');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(a => a.classList.remove('active'));
-          const active = document.querySelector(`.nav-links a[data-section="${entry.target.id}"]`);
-          if (active) active.classList.add('active');
-        }
-      });
-    }, { threshold: 0.3 });
-    document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
-
-    /* ── FADE IN on scroll ── */
-    const fadeObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          fadeObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
-
-    document.querySelectorAll('.photo-item').forEach((el, i) => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(16px)';
-      el.style.transition = `opacity 0.5s ease ${i * 0.04}s, transform 0.5s ease ${i * 0.04}s`;
-      fadeObserver.observe(el);
-    });
-  </script>
-</body>
-</html>
+        <a class="contact-link" href="https://instagram.com/noahbntt" target="_
