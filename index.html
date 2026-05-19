@@ -493,7 +493,6 @@
       }
       .hero-socials-left { justify-content: center; }
       
-      /* Titre smartphone également ajusté et harmonisé */
       .hero-title { 
         font-size: clamp(36px, 10vw, 52px); 
         text-align: center; 
@@ -502,14 +501,23 @@
         font-size: 22px;
       }
       
-      .hero-sub { font-size: 14px; } /* Ajusté petit sur mobile */
+      .hero-sub { font-size: 14px; }
       .hero-bottom { padding: 14px 20px; }
 
       section { padding: 60px 20px 40px; }
       section:nth-child(even) { background: var(--bg2); }
-      .section-title { font-size: 22px; }
-      
-      /* Modification : 2 colonnes forcées sur smartphone et tablettes portrait */
+      .section-title { font-size: 18px; }
+
+      /* Bouton pill : masquer le texte 'Détails', garder juste la flèche */
+      .section-toggle {
+        padding: 5px 9px;
+        font-size: 0;
+        gap: 0;
+      }
+      .section-toggle svg {
+        width: 14px; height: 14px;
+      }
+
       .gallery { columns: 2; column-gap: 8px; }
       .photo-item { margin-bottom: 8px; }
 
