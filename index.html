@@ -69,26 +69,38 @@
     }
 
     .section-toggle {
-      background: none;
-      border: none;
+      background: rgba(74, 107, 74, 0.15);
+      border: 1px solid rgba(122, 158, 116, 0.35);
+      border-radius: 999px;
       cursor: pointer;
-      padding: 2px 4px;
+      padding: 5px 14px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      transition: color 0.3s, transform 0.35s ease;
+      gap: 6px;
+      color: var(--green-lt);
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-variation-settings: 'wght' 500, 'wdth' 100;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
       flex-shrink: 0;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
     }
-    .section-toggle:hover { color: var(--green-lt); }
+    .section-toggle:hover {
+      background: rgba(74, 107, 74, 0.3);
+      border-color: var(--green-lt);
+      color: var(--cream);
+    }
     .section-toggle svg {
-      width: 16px; height: 16px;
+      width: 13px; height: 13px;
       stroke: currentColor;
       fill: none;
-      stroke-width: 2;
+      stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
       transition: transform 0.35s ease;
+      flex-shrink: 0;
     }
     .section-toggle.open svg { transform: rotate(180deg); }
 
@@ -569,12 +581,10 @@
     <div class="section-header">
       <span class="section-title">Paris 2024</span>
       <div class="section-line"></div>
-      <button class="section-toggle" aria-label="Afficher description">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
+      <button class="section-toggle" aria-label="Afficher description">Détails<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
     </div>
     <div class="section-desc">
-      <p class="section-desc-inner">Description à compléter.</p>
+      <p class="section-desc-inner">Images réalisées durant les Jeux Olympiques de Paris 2024 aux épreuves de <strong>rugby à 7, VTT, triathlon et athlétisme</strong>, sans aucune accréditation.</p>
     </div>
     <div class="gallery">
       <div class="photo-item" data-src="photos/paris2024/IMG_2107.jpg"><img src="photos/paris2024/IMG_2107.jpg" alt="Paris 2024" /></div>
@@ -596,12 +606,10 @@
     <div class="section-header">
       <span class="section-title">Athlétisme</span>
       <div class="section-line"></div>
-      <button class="section-toggle" aria-label="Afficher description">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
+      <button class="section-toggle" aria-label="Afficher description">Détails<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
     </div>
     <div class="section-desc">
-      <p class="section-desc-inner">Description à compléter.</p>
+      <p class="section-desc-inner">Images réalisées durant plusieurs meetings d'athlétisme, incluant le <strong>Meeting de Paris</strong> (2024, 2025), les JO de Paris et le Breaking 4, sans accréditation.</p>
     </div>
     <div class="gallery">
       <div class="photo-item" data-src="photos/trackfield/photo-5.jpg"><img src="photos/trackfield/photo-5.jpg" alt="Track & Field" /></div>
@@ -623,12 +631,10 @@
     <div class="section-header">
       <span class="section-title">Running</span>
       <div class="section-line"></div>
-      <button class="section-toggle" aria-label="Afficher description">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
+      <button class="section-toggle" aria-label="Afficher description">Détails<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
     </div>
     <div class="section-desc">
-      <p class="section-desc-inner">Description à compléter.</p>
+      <p class="section-desc-inner">Images réalisées sur différentes courses (inter)nationales incluant le <strong>Marathon de Londres (2025)</strong>, le <strong>Marathon de Paris (2024, 2025)</strong>, ainsi que les Championnats de France de 10km (2026).</p>
     </div>
     <div class="gallery">
       <div class="photo-item" data-src="photos/running/IMG_1215.jpg"><img src="photos/running/IMG_1215.jpg" alt="Running" /></div>
@@ -650,12 +656,10 @@
     <div class="section-header">
       <span class="section-title">Astrophotographie</span>
       <div class="section-line"></div>
-      <button class="section-toggle" aria-label="Afficher description">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
+      <button class="section-toggle" aria-label="Afficher description">Détails<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
     </div>
     <div class="section-desc">
-      <p class="section-desc-inner">Description à compléter.</p>
+      <p class="section-desc-inner">Images réalisées entre 2023 et 2025 depuis mon jardin situé en banlieue parisienne (Bortle 6 : pollution lumineuse élevée). Réalisées avec une monture équatoriale pour le suivi d'étoiles.</p>
     </div>
     <div class="gallery">
       <div class="photo-item" data-src="photos/astrophoto/ngc7000.jpg"><img src="photos/astrophoto/ngc7000.jpg" alt="NGC 7000" /></div>
