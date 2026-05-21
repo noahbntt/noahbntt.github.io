@@ -30,7 +30,6 @@
       font-variation-settings: 'wght' 340, 'wdth' 100;
       font-size: 14px;
       letter-spacing: 0.02em;
-      cursor: none;
     }
 
     /* ── GRAIN PAPIER ── */
@@ -105,23 +104,10 @@
     .section-toggle.open svg { transform: rotate(180deg); }
 
     /* Tout le contenu de structure */
-    nav, .nav-mobile, .mobile-menu, .hero, section, footer, .cursor, .lightbox {
+    nav, .nav-mobile, .mobile-menu, .hero, section, footer, .lightbox {
       position: relative;
       z-index: 1;
     }
-
-    /* ── CURSOR ── */
-    .cursor {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--green-lt);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
-    }
-    .cursor.expanded { width: 36px; height: 36px; opacity: 0.18; }
 
     /* ── NAV desktop (Bannière de menus AGRANDIE) ── */
     nav {
@@ -342,7 +328,7 @@
       break-inside: avoid;
       margin-bottom: 10px;
       overflow: hidden;
-      cursor: none;
+      cursor: pointer;
       border-radius: 2px;
       position: relative;
       z-index: 1005; /* Sort de l'effet de grain global pour rester parfaitement nette */
@@ -351,10 +337,28 @@
     .photo-item img {
       width: 100%; display: block;
       transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
-      
     }
+    
+    /* MODIFICATION : Légende au survol */
+    .photo-caption {
+      position: absolute;
+      inset: 0;
+      background: rgba(26, 31, 26, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      text-align: center;
+      font-size: 13px;
+      font-variation-settings: 'wght' 400, 'wdth' 100;
+      color: var(--cream);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none; /* Évite les conflits de survol */
+    }
+    
     .photo-item:hover img { transform: scale(1.03); }
-    .photo-caption { display: none; }
+    .photo-item:hover .photo-caption { opacity: 1; }
 
     /* ── ABOUT ── */
     .about-container {
@@ -473,14 +477,13 @@
       position: absolute; top: 24px; right: 32px;
       color: var(--muted); font-size: 11px;
       letter-spacing: 0.2em; text-transform: uppercase;
-      background: none; border: none; cursor: none; transition: color 0.3s;
+      background: none; border: none; cursor: pointer; transition: color 0.3s;
     }
     .lightbox-close:hover { color: var(--cream); }
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       body { cursor: auto; }
-      .cursor { display: none; }
       nav { display: none; }
       .nav-mobile { display: flex; }
 
@@ -520,6 +523,9 @@
 
       .gallery { columns: 2; column-gap: 8px; }
       .photo-item { margin-bottom: 8px; }
+      
+      /* Désactiver la description survolée sur mobile pour éviter les bugs tactiles */
+      .photo-caption { display: none; }
 
       .about-container { flex-direction: column; gap: 24px; align-items: center; }
       .about-photo { width: 100%; max-width: 280px; height: 360px; }
@@ -530,8 +536,6 @@
   </style>
 </head>
 <body>
-
-  <div class="cursor" id="cursor"></div>
 
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" id="lightbox-close">Fermer ×</button>
@@ -595,18 +599,18 @@
       <p class="section-desc-inner">Images réalisées durant les Jeux Olympiques de Paris 2024 aux épreuves de rugby à 7, VTT, triathlon et athlétisme, sans aucune accréditation.</p>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/paris2024/IMG_2107.jpg"><img src="photos/paris2024/IMG_2107.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_8705.jpg"><img src="photos/paris2024/IMG_8705.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_4915.jpg"><img src="photos/paris2024/IMG_4915.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_3768.jpg"><img src="photos/paris2024/IMG_3768.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_3889.jpg"><img src="photos/paris2024/IMG_3889.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_3732.jpg"><img src="photos/paris2024/IMG_3732.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_8696.jpg"><img src="photos/paris2024/IMG_8696.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_5076.jpg"><img src="photos/paris2024/IMG_5076.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_6500.jpg"><img src="photos/paris2024/IMG_6500.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_3882.jpg"><img src="photos/paris2024/IMG_3882.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_6880.jpg"><img src="photos/paris2024/IMG_6880.jpg" alt="Paris 2024" /></div>
-      <div class="photo-item" data-src="photos/paris2024/IMG_8689.jpg"><img src="photos/paris2024/IMG_8689.jpg" alt="Paris 2024" /></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_2107.jpg"><img src="photos/paris2024/IMG_2107.jpg" alt="Rugby à 7 — Stade de France" /><div class="photo-caption">Rugby à 7 — Stade de France</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_8705.jpg"><img src="photos/paris2024/IMG_8705.jpg" alt="VTT Cross-country — Elancourt" /><div class="photo-caption">VTT Cross-country — Elancourt</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_4915.jpg"><img src="photos/paris2024/IMG_4915.jpg" alt="Triathlon — Pont Alexandre III" /><div class="photo-caption">Triathlon — Pont Alexandre III</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3768.jpg"><img src="photos/paris2024/IMG_3768.jpg" alt="Athlétisme — Paris 2024" /><div class="photo-caption">Athlétisme — Paris 2024</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3889.jpg"><img src="photos/paris2024/IMG_3889.jpg" alt="Athlétisme — Épreuve sur piste" /><div class="photo-caption">Athlétisme — Épreuve sur piste</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3732.jpg"><img src="photos/paris2024/IMG_3732.jpg" alt="Paris 2024" /><div class="photo-caption">Paris 2024</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_8696.jpg"><img src="photos/paris2024/IMG_8696.jpg" alt="Paris 2024" /><div class="photo-caption">Paris 2024</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_5076.jpg"><img src="photos/paris2024/IMG_5076.jpg" alt="Paris 2024" /><div class="photo-caption">Paris 2024</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_6500.jpg"><img src="photos/paris2024/IMG_6500.jpg" alt="Paris 2024" /><div class="photo-caption">Paris 2024</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_3882.jpg"><img src="photos/paris2024/IMG_3882.jpg" alt="Paris 2024" /><div class="photo-caption">Paris 2024</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_6880.jpg"><img src="photos/paris2024/IMG_6880.jpg" alt="Paris 2024" /><div class="photo-caption">Paris 2024</div></div>
+      <div class="photo-item" data-src="photos/paris2024/IMG_8689.jpg"><img src="photos/paris2024/IMG_8689.jpg" alt="Paris 2024" /><div class="photo-caption">Paris 2024</div></div>
     </div>
   </section>
 
@@ -620,18 +624,18 @@
       <p class="section-desc-inner">Images réalisées durant plusieurs meetings d'athlétisme, incluant le Meeting de Paris (2024, 2025), les JO de Paris et le Breaking 4, sans accréditation.</p>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/trackfield/photo-5.jpg"><img src="photos/trackfield/photo-5.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0340.jpg"><img src="photos/trackfield/IMG_0340.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0563.jpg"><img src="photos/trackfield/IMG_0563.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0114.jpg"><img src="photos/trackfield/IMG_0114.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0144.jpg"><img src="photos/trackfield/IMG_0144.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_6658.jpg"><img src="photos/trackfield/IMG_6658.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0591.jpg"><img src="photos/trackfield/IMG_0591.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0633.jpg"><img src="photos/trackfield/IMG_0633.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0141.jpg"><img src="photos/trackfield/IMG_0141.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0369.jpg"><img src="photos/trackfield/IMG_0369.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_0541.jpg"><img src="photos/trackfield/IMG_0541.jpg" alt="Track & Field" /></div>
-      <div class="photo-item" data-src="photos/trackfield/IMG_9922.jpg"><img src="photos/trackfield/IMG_9922.jpg" alt="Track & Field" /></div>
+      <div class="photo-item" data-src="photos/trackfield/photo-5.jpg"><img src="photos/trackfield/photo-5.jpg" alt="Meeting de Paris" /><div class="photo-caption">Meeting de Paris</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0340.jpg"><img src="photos/trackfield/IMG_0340.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0563.jpg"><img src="photos/trackfield/IMG_0563.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0114.jpg"><img src="photos/trackfield/IMG_0114.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0144.jpg"><img src="photos/trackfield/IMG_0144.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_6658.jpg"><img src="photos/trackfield/IMG_6658.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0591.jpg"><img src="photos/trackfield/IMG_0591.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0633.jpg"><img src="photos/trackfield/IMG_0633.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0141.jpg"><img src="photos/trackfield/IMG_0141.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0369.jpg"><img src="photos/trackfield/IMG_0369.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_0541.jpg"><img src="photos/trackfield/IMG_0541.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
+      <div class="photo-item" data-src="photos/trackfield/IMG_9922.jpg"><img src="photos/trackfield/IMG_9922.jpg" alt="Track & Field" /><div class="photo-caption">Track & Field</div></div>
     </div>
   </section>
 
@@ -645,18 +649,18 @@
       <p class="section-desc-inner">Images réalisées sur différentes courses (inter)nationales incluant le Marathon de Londres (2025), le Marathon de Paris (2024, 2025), ainsi que les Championnats de France de 10km (2026).</p>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/running/IMG_1215.jpg"><img src="photos/running/IMG_1215.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9684.jpg"><img src="photos/running/IMG_9684.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9591.jpg"><img src="photos/running/IMG_9591.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9631.jpg"><img src="photos/running/IMG_9631.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9672.jpg"><img src="photos/running/IMG_9672.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_0252.jpg"><img src="photos/running/IMG_0252.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9111.jpg"><img src="photos/running/IMG_9111.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9169.jpg"><img src="photos/running/IMG_9169.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_1246.jpg"><img src="photos/running/IMG_1246.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9747.jpg"><img src="photos/running/IMG_9747.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_6251.jpg"><img src="photos/running/IMG_6251.jpg" alt="Running" /></div>
-      <div class="photo-item" data-src="photos/running/IMG_9648.jpg"><img src="photos/running/IMG_9648.jpg" alt="Running" /></div>
+      <div class="photo-item" data-src="photos/running/IMG_1215.jpg"><img src="photos/running/IMG_1215.jpg" alt="Marathon de Paris" /><div class="photo-caption">Marathon de Paris</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9684.jpg"><img src="photos/running/IMG_9684.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9591.jpg"><img src="photos/running/IMG_9591.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9631.jpg"><img src="photos/running/IMG_9631.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9672.jpg"><img src="photos/running/IMG_9672.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_0252.jpg"><img src="photos/running/IMG_0252.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9111.jpg"><img src="photos/running/IMG_9111.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9169.jpg"><img src="photos/running/IMG_9169.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_1246.jpg"><img src="photos/running/IMG_1246.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9747.jpg"><img src="photos/running/IMG_9747.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_6251.jpg"><img src="photos/running/IMG_6251.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
+      <div class="photo-item" data-src="photos/running/IMG_9648.jpg"><img src="photos/running/IMG_9648.jpg" alt="Running" /><div class="photo-caption">Running</div></div>
     </div>
   </section>
 
@@ -670,18 +674,18 @@
       <p class="section-desc-inner">Images réalisées entre 2023 et 2025 depuis mon jardin situé en banlieue parisienne (Bortle 6 : pollution lumineuse élevée). Réalisées avec une monture équatoriale pour le suivi d'étoiles.</p>
     </div>
     <div class="gallery">
-      <div class="photo-item" data-src="photos/astrophoto/ngc7000.jpg"><img src="photos/astrophoto/ngc7000.jpg" alt="NGC 7000" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_0686 (1).jpg"><img src="photos/astrophoto/IMG_0686 (1).jpg" alt="Astrophotography" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_2777.jpg"><img src="photos/astrophoto/IMG_2777.jpg" alt="Astrophotography" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_0668.jpg"><img src="photos/astrophoto/IMG_0668.jpg" alt="Astrophotography" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/IMG_2805.jpg"><img src="photos/astrophoto/IMG_2805.jpg" alt="Astrophotography" /></div><div class="photo-item" data-src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg"><img src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg" alt="Astrophotography" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/voielactée (1) (1).jpg"><img src="photos/astrophoto/voielactée (1) (1).jpg" alt="Voie Lactée" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/pléiades4.jpg"><img src="photos/astrophoto/pléiades4.jpg" alt="Pléiades" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/c2022_e3_ztf.jpg"><img src="photos/astrophoto/c2022_e3_ztf.jpg" alt="Comète C/2022 E3 ZTF" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/themarkarianschaine.jpg"><img src="photos/astrophoto/themarkarianschaine.jpg" alt="Markarian's Chain" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/heartnebula.jpg"><img src="photos/astrophoto/heartnebula.jpg" alt="Heart Nebula" /></div>
-      <div class="photo-item" data-src="photos/astrophoto/éclipse2 (2).jpg"><img src="photos/astrophoto/éclipse2 (2).jpg" alt="Éclipse" /></div>  
-   
+      <div class="photo-item" data-src="photos/astrophoto/ngc7000.jpg"><img src="photos/astrophoto/ngc7000.jpg" alt="Nébuleuse North America — NGC 7000" /><div class="photo-caption">Nébuleuse North America — NGC 7000</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_0686 (1).jpg"><img src="photos/astrophoto/IMG_0686 (1).jpg" alt="Astrophotographie" /><div class="photo-caption">Astrophotographie</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_2777.jpg"><img src="photos/astrophoto/IMG_2777.jpg" alt="Astrophotographie" /><div class="photo-caption">Astrophotographie</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_0668.jpg"><img src="photos/astrophoto/IMG_0668.jpg" alt="Astrophotographie" /><div class="photo-caption">Astrophotographie</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/IMG_2805.jpg"><img src="photos/astrophoto/IMG_2805.jpg" alt="Astrophotographie" /><div class="photo-caption">Astrophotographie</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg"><img src="photos/astrophoto/C11BC3F5-17B1-4F49-9F62-0BAD64D5E5F1.jpg" alt="Astrophotographie" /><div class="photo-caption">Astrophotographie</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/voielactée (1) (1).jpg"><img src="photos/astrophoto/voielactée (1) (1).jpg" alt="La Voie Lactée" /><div class="photo-caption">La Voie Lactée</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/pléiades4.jpg"><img src="photos/astrophoto/pléiades4.jpg" alt="Les Pléiades — M45" /><div class="photo-caption">Les Pléiades — M45</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/c2022_e3_ztf.jpg"><img src="photos/astrophoto/c2022_e3_ztf.jpg" alt="Comète C/2022 E3 ZTF" /><div class="photo-caption">Comète C/2022 E3 ZTF</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/themarkarianschaine.jpg"><img src="photos/astrophoto/themarkarianschaine.jpg" alt="La Chaîne de Markarian" /><div class="photo-caption">La Chaîne de Markarian</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/heartnebula.jpg"><img src="photos/astrophoto/heartnebula.jpg" alt="Nébuleuse du Cœur" /><div class="photo-caption">Nébuleuse du Cœur</div></div>
+      <div class="photo-item" data-src="photos/astrophoto/éclipse2 (2).jpg"><img src="photos/astrophoto/éclipse2 (2).jpg" alt="Éclipse Solaire" /><div class="photo-caption">Éclipse Solaire</div></div>  
     </div>
   </section>
 
@@ -723,7 +727,6 @@
         </p>
         <a class="contact-link" href="mailto:noah.bonnet78@gmail.com">noah.bonnet78@gmail.com</a>
         <a class="contact-link" href="https://instagram.com/noahbntt" target="_blank">Mon compte Instagram</a>
-   
       </div>
     </div>
   </section>
@@ -734,17 +737,6 @@
   </footer>
 
   <script>
-    /* ── CURSOR ── */
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
-    });
-    document.querySelectorAll('a, button, .photo-item, .hero-socials-left a').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('expanded'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
-    });
-
     /* ── HAMBURGER ── */
     const hamburger  = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -826,6 +818,7 @@
       el.style.transition = `opacity 0.5s ease ${i * 0.04}s, transform 0.5s ease ${i * 0.04}s`;
       fadeObserver.observe(el);
     });
+    
     /* ── ACCORDION DESCRIPTIONS ── */
     document.querySelectorAll('.section-toggle').forEach(btn => {
       btn.addEventListener('click', () => {
