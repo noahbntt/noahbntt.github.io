@@ -537,7 +537,25 @@
       .photo-item { margin-bottom: 8px; }
       
       /* Désactiver la description survolée sur mobile pour éviter les bugs tactiles */
-      .photo-caption { display: none; }
+
+/* Adaptation des descriptions de photos pour mobile (affichage permanent sous l'image) */
+      .photo-caption {
+  position: relative;          /* Sort du positionnement absolu pour s'insérer sous l'image */
+  opacity: 1;                  /* Reste visible en permanence */
+  transform: translateY(0);    /* Annule l'effet de glissement */
+  background: transparent;     /* Enlève le fond noir */
+  backdrop-filter: none;       /* Enlève le flou */
+  -webkit-backdrop-filter: none;
+  padding: 6px 2px 14px 2px;   /* Ajuste l'espace (plus d'espace en bas pour séparer de la photo suivante) */
+  font-size: 11px;             /* Écrit un poil plus petit pour le style mobile */
+  color: var(--muted);         /* Utilise la couleur text secondaire pour rester discret */
+  border-top: none;            /* Supprime la bordure supérieure devenue inutile */
+  pointer-events: auto;
+}
+
+
+
+      
 
       .about-container { flex-direction: column; gap: 24px; align-items: center; }
       .about-photo { width: 100%; max-width: 280px; height: 360px; }
