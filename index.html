@@ -496,7 +496,46 @@
       background: none; border: none; cursor: pointer; transition: color 0.3s;
     }
     .lightbox-close:hover { color: var(--cream); }
+const lightbox = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lightbox-img');
 
+    document.querySelectorAll('.photo-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        // Vérifie si on est sur mobile (largeur d'écran < 768px)
+        if (window.innerWidth <= 768) {
+          // Si l'image cliquée n'a pas encore la description d'affichée
+          if (!item.classList.contains('active')) {
+            e.stopPropagation(); // Empêche l'ouverture immédiate de la lightbox
+            
+            // Ferme les autres descriptions potentiellement ouvertes
+            document.querySelectorAll('.photo-item.active').forEach(el => el.classList.remove('active'));
+            
+            // Active la description sur celle-ci
+            item.classList.add('active');
+            return; // Arrête la fonction ici
+          }
+        }
+
+        // Comportement normal (PC ou second clic mobile) : ouverture de la Lightbox
+        const src = item.getAttribute('data-src');
+        const img = item.querySelector('img');
+        if (src && src.trim() !== '') {
+          lbImg.src = src; lightbox.classList.add('open');
+        } else if (img) {
+          lbImg.src = img.src; lightbox.classList.add('open');
+        }
+        
+        // Optionnel : retire le texte dès qu'on va dans la lightbox
+        item.classList.remove('active');
+      });
+    });
+
+    // Fermer la description si on clique n'importe où ailleurs sur la page mobile
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.photo-item')) {
+        document.querySelectorAll('.photo-item.active').forEach(el => el.classList.remove('active'));
+      }
+    });
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       body { cursor: auto; }
