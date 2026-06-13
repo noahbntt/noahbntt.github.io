@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trouver mes photos — noahbntt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wdth,wght@75..100,200..800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="photos/favicon.png" />
+  <style>
+    /* ── PALETTE VERTE VINTAGE EXISTANTE ── */
+    :root {
+      --bg:        #1a1f1a;
+      --bg2:       #222820;
+      --surface:   #2a3028;
+      --green:     #4e6b4a;
+      --green-lt:  #7a9e74;
+      --cream:     #e8e2d4;
+      --muted:     #7a8a76;
+      --nav-h:     64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--cream);
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-variation-settings: 'wght' 340, 'wdth' 100;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Effet grain de papier identique à ton site */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.28;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='8' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23paper)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 300px;
+      mix-blend-mode: overlay;
+    }
+
+    /* NAV simplifiée pour revenir à l'accueil */
+    nav {
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 1px solid rgba(74, 107, 74, 0.25);
+      background: rgba(26, 31, 26, 0.82);
+    }
+
+    .nav-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-variation-settings: 'wght' 800, 'wdth' 100;
+      font-size: 22px;
+      letter-spacing: -0.05em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .back-btn {
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      font-variation-settings: 'wght' 600;
+      transition: color 0.3s;
+    }
+    .back-btn:hover { color: var(--green-lt); }
+
+    /* CONTENUR PRINCIPAL */
+    main {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-variation-settings: 'wght' 700, 'wdth' 100;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green-lt);
+      margin-bottom: 16px;
+      font-variation-settings: 'wght' 600;
+    }
+
+    /* ── GRILLE DES BULLES DE COURSES ── */
+    .race-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .race-bubble {
+      background: rgba(74, 107, 74, 0.15);
+      border: 1px solid rgba(122, 158, 116, 0.35);
+      color: var(--cream);
+      padding: 12px 24px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-variation-settings: 'wght' 500;
+      font-size: 14px;
+      transition: all 0.25s ease;
+    }
+    .race-bubble:hover {
+      background: rgba(74, 107, 74, 0.3);
+      border-color: var(--green-lt);
+    }
+    .race-bubble.selected {
+      background: var(--cream);
+      color: #1a1f1a;
+      border-color: var(--cream);
+      font-variation-settings: 'wght' 700;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* ── ZONE DE RECHERCHE DYNAMIQUE ── */
+    .search-zone {
+      display: none; /* Apparaît quand une course est sélectionnée */
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .upload-box {
+      border: 1px dashed var(--green);
+      padding: 40px 20px;
+      border-radius: 4px;
+      background: rgba(74, 107, 74, 0.03);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Bouton style iPhone / iOS */
+    .ios-btn {
+      background: var(--cream);
+      color: #1a1f1a;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-variation-settings: 'wght' 700, 'wdth' 100;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .ios-btn:hover {
+      transform: scale(1.02);
+      background: #f4eee1;
+    }
+    .ios-btn:disabled {
+      background: var(--surface);
+      color: var(--muted);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .rgpd-container {
+      margin: 20px auto 0;
+      text-align: left;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      max-width: 500px;
+    }
+    .rgpd-container input {
+      margin-top: 3px;
+      accent-color: var(--green-lt);
+      cursor: pointer;
+    }
+    .rgpd-container label {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    #search-loader {
+      display: none;
+      margin-top: 25px;
+      color: var(--green-lt);
+      font-variation-settings: 'wght' 450;
+    }
+
+    /* ── GALERIE DE RÉSULTATS (Structure identique) ── */
+    .gallery { 
+      columns: 3; 
+      column-gap: 10px; 
+      margin-top: 50px; 
+      text-align: left;
+      display: none;
+    }
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 2px;
+      position: relative;
+    }
+    .photo-item img { width: 100%; display: block; transition: transform 0.4s ease; }
+    .photo-item:hover img { transform: scale(1.03); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(15,20,15,0.97); z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 32px; color: var(--muted); font-size: 11px;
+      background: none; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    footer {
+      padding: 30px;
+      border-top: 1px solid rgba(74,107,74,0.1);
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .gallery { columns: 2; column-gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">Fermer ×</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <nav>
+    <a class="nav-logo" href="index.html">noahbntt</a>
+    <a class="back-btn" href="index.html">← Galerie</a>
+  </nav>
+
+  <main>
+    <h1>Retrouve tes photos de course</h1>
+    <p class="subtitle">Grâce à la reconnaissance faciale, dépose un selfie et accède instantanément à l'ensemble des clichés où tu apparais. Service entièrement bénévole.</p>
+
+    <div class="section-subtitle">Sélectionne ta course</div>
+    <div class="race-selector">
+      <button class="race-bubble" data-race="paris2024">Paris 2024</button>
+      <button class="race-bubble" data-race="marathon-paris">Marathon de Paris</button>
+      <button class="race-bubble" data-race="france-10km">France de 10km (2026)</button>
+      <button class="race-bubble" data-race="marathon-londres">Marathon de Londres</button>
+    </div>
+
+    <div class="search-zone" id="search-zone">
+      <div class="section-subtitle" id="step2-title">Dépose ton selfie</div>
+      
+      <div class="upload-box">
+        <input type="file" id="selfie-input" accept="image/*" capture="user" style="display: none;" />
+        <button id="upload-trigger-btn" class="ios-btn">
+          📷 Prendre ou choisir une photo
+        </button>
+        <p id="file-name" style="margin-top: 15px; color: var(--green-lt); font-size: 12px; font-variation-settings: 'wght' 500;"></p>
+      </div>
+
+      <div class="rgpd-container">
+        <input type="checkbox" id="rgpd-check" />
+        <label for="rgpd-check">
+          J'accepte que mon visage soit analysé pour l'identification. La photo ne sera pas sauvegardée et sera détruite immédiatement après traitement.
+        </label>
+      </div>
+
+      <button id="search-photos-btn" class="ios-btn" style="margin-top: 30px; display: none;" disabled>
+        Lancer la recherche 🚀
+      </button>
+
+      <div id="search-loader">
+        Analyse du visage en cours pour la course sélectionnée... 🏃‍♂️
+      </div>
+    </div>
+
+    <div id="results-gallery" class="gallery"></div>
+  </main>
+
+  <footer>
+    © 2026 noahbntt — Versailles, France
+  </footer>
+
+  <script>
+    const raceBubbles = document.querySelectorAll('.race-bubble');
+    const searchZone = document.getElementById('search-zone');
+    const step2Title = document.getElementById('step2-title');
+    const selfieInput = document.getElementById('selfie-input');
+    const uploadTriggerBtn = document.getElementById('upload-trigger-btn');
+    const fileNameText = document.getElementById('file-name');
+    const rgpdCheck = document.getElementById('rgpd-check');
+    const searchPhotosBtn = document.getElementById('search-photos-btn');
+    const searchLoader = document.getElementById('search-loader');
+    const resultsGallery = document.getElementById('results-gallery');
+
+    let selectedRace = "";
+
+    // Gestion du clic sur les bulles de course
+    raceBubbles.forEach(bubble => {
+      bubble.addEventListener('click', () => {
+        // Nettoyage des anciennes sélections
+        raceBubbles.forEach(b => b.classList.remove('selected'));
+        
+        // Activer la bulle cliquée
+        bubble.classList.add('selected');
+        selectedRace = bubble.getAttribute('data-race');
+        
+        // Mettre à jour le titre de l'étape 2 et afficher la zone d'upload
+        step2Title.textContent = `Étape 2 : Ton selfie pour [${bubble.textContent}]`;
+        searchZone.style.display = 'block';
+        
+        // Reset de la recherche si l'utilisateur change de course en cours de route
+        resetSearchFields();
+      });
+    });
+
+    function resetSearchFields() {
+      selfieInput.value = "";
+      fileNameText.textContent = "";
+      rgpdCheck.checked = false;
+      searchPhotosBtn.style.display = 'none';
+      resultsGallery.style.display = 'none';
+      resultsGallery.innerHTML = '';
+    }
+
+    // Ouvrir le gestionnaire de fichier / appareil photo
+    uploadTriggerBtn.addEventListener('click', () => selfieInput.click());
+
+    selfieInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        fileNameText.textContent = `Photo sélectionnée : ${e.target.files[0].name}`;
+        checkSearchReady();
+      }
+    });
+
+    rgpdCheck.addEventListener('change', checkSearchReady);
+
+    function checkSearchReady() {
+      if (selfieInput.files.length > 0 && rgpdCheck.checked) {
+        searchPhotosBtn.style.display = 'inline-flex';
+        searchPhotosBtn.disabled = false;
+      } else {
+        searchPhotosBtn.disabled = true;
+      }
+    }
+
+    // Simulation du clic de recherche
+    searchPhotosBtn.addEventListener('click', async () => {
+      const file = selfieInput.files[0];
+      if (!file) return;
+
+      searchLoader.style.display = 'block';
+      searchPhotosBtn.style.display = 'none';
+      resultsGallery.style.display = 'none';
+      resultsGallery.innerHTML = '';
+
+      try {
+        // On passe le fichier et la course sélectionnée à notre fonction
+        const photosTrouvees = await simulerCalculIA(file, selectedRace);
+        
+        searchLoader.style.display = 'none';
+        
+        if (photosTrouvees.length === 0) {
+          fileNameText.textContent = `Aucune photo trouvée pour toi sur la course ${selectedRace} 😢`;
+        } else {
+          resultsGallery.style.display = 'block';
+          
+          photosTrouvees.forEach(urlPhoto => {
+            const item = document.createElement('div');
+            item.className = 'photo-item';
+            item.innerHTML = `<img src="${urlPhoto}" alt="Photo de course" />`;
+            
+            // Événement Lightbox interne
+            item.addEventListener('click', () => {
+              document.getElementById('lightbox-img').src = urlPhoto;
+              document.getElementById('lightbox').classList.add('open');
+            });
+            
+            resultsGallery.appendChild(item);
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        searchLoader.style.display = 'none';
+        fileNameText.textContent = "Erreur technique lors de la recherche.";
+      }
+    });
+
+    // Fonction de simulation (A modifier plus tard avec l'API réelle)
+    function simulerCalculIA(fichier, codeCourse) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          // Simulation : On renvoie des photos différentes selon la course choisie !
+          if (codeCourse === 'paris2024') {
+            resolve(['photos/paris2024/IMG_2107.jpg', 'photos/paris2024/IMG_4915.jpg']);
+          } else if (codeCourse === 'running' || codeCourse === 'marathon-paris') {
+            resolve(['photos/running/IMG_1215.jpg', 'photos/running/IMG_9684.jpg']);
+          } else {
+            // Par défaut si pas encore de photos dans tes dossiers
+            resolve(['photos/paris2024/IMG_8705.jpg']);
+          }
+        }, 2000);
+      });
+    }
+
+    // Gestion fermeture Lightbox
+    const lightbox = document.getElementById('lightbox');
+    document.getElementById('lightbox-close').addEventListener('click', () => lightbox.classList.remove('open'));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+  </script>
+</body>
+</html>
