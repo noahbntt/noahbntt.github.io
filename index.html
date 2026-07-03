@@ -197,12 +197,12 @@ transition: color 0.2s;
 }
 .mobile-menu a:hover { color: var(--cream); }
 
-/* ── HERO BANNER RE-CONSTRUITE & PARFAITEMENT CENTRÉE ── */
+/* ── HERO BANNER COMPLETELY CENTERED & LARGER ── */
 .hero {
 display: flex; 
 justify-content: center;
 align-items: center;
-min-height: 140px; /* Assure une hauteur stable et harmonieuse */
+min-height: 160px; 
 padding-top: var(--nav-h);
 position: relative;
 background: var(--bg);
@@ -218,8 +218,8 @@ align-items: center;
 justify-content: center;
 text-align: center;
 width: 100%;
-padding: 24px 40px;
-gap: 6px; /* Espace équilibré entre le titre et la sous-bannière */
+padding: 32px 40px;
+gap: 8px; 
 }
 
 .hero-socials-left {
@@ -242,11 +242,11 @@ transition: color 0.2s ease;
 .hero-title {
 font-family: 'Bricolage Grotesque', sans-serif;
 font-variation-settings: 'wght' 800, 'wdth' 100;
-font-size: 28px;
+font-size: 36px; /* Plus grand pour plus d'impact au centre */
 letter-spacing: -0.03em;
 color: var(--cream);
 text-transform: lowercase;
-line-height: 1.2;
+line-height: 1.1;
 }
 
 .hero-sub {
@@ -291,7 +291,7 @@ white-space: nowrap;
 
 .section-line { flex: 1; height: 1px; background: rgba(255, 255, 255, 0.08); }
 
-/* ── PHOTOS SANS DISTORSION/RECADRAGE TRONQUÉ ── */
+/* ── PHOTOS SANS DISTORSION ── */
 .gallery {
 display: grid;
 grid-template-columns: repeat(4, 1fr);
@@ -328,14 +328,20 @@ margin-top: 24px;
 }
 
 .about-photo {
-flex: 0 0 220px;
-width: 220px;
-height: auto;
+flex: 0 0 200px;
+width: 200px;
+aspect-ratio: 1 / 1; /* Force un ratio parfait */
 overflow: hidden;
 border-radius: 4px;
 border: 1px solid rgba(255, 255, 255, 0.08);
+background: var(--surface);
 }
-.about-photo img { width: 100%; height: auto; display: block; object-fit: contain; }
+.about-photo img { 
+width: 100%; 
+height: 100%; 
+display: block; 
+object-fit: cover; /* Remplit parfaitement le cadre sans distorsion ni bandes vides */
+}
 
 .about-details { flex: 1; }
 .about-text {
@@ -434,23 +440,35 @@ nav { display: none; }
 .hero-content {
 position: static;
 transform: none;
-padding: 30px 24px;
-gap: 10px;
+padding: 34px 24px;
+gap: 12px;
 }
 .hero-socials-left {
 position: static;
 transform: none;
 justify-content: center;
-margin-top: 4px;
+margin-top: 6px;
 }
-.hero-title { font-size: 24px; }
+.hero-title { font-size: 28px; } /* Ajusté proportionnellement pour mobile */
 
 section { padding: 35px 24px; }
 #diamondleague { padding-top: 25px; }
 
 .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
-.about-container { flex-direction: column; gap: 24px; align-items: flex-start; }
-.about-photo { width: 140px; }
+
+/* Correction complète du bloc à propos sur mobile */
+.about-container { 
+flex-direction: column; 
+gap: 24px; 
+align-items: center; 
+text-align: center;
+}
+.about-photo { 
+width: 160px; 
+height: 160px; 
+}
+.about-tags { justify-content: center; }
+
 .contact-grid { grid-template-columns: 1fr; gap: 24px; }
 footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 }
@@ -503,8 +521,8 @@ footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 <svg viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg>
 </a>
 </div>
-<h2 class="hero-title">noahbntt</h2>
-<p class="hero-sub">Photographe sportif & astrophotographe.</p>
+<h1 class="hero-title">noahbntt</h1>
+<p class="hero-sub">Photographe passionné de sports et d'astronomie.</p>
 </div>
 </div>
 
