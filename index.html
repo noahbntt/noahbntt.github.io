@@ -272,7 +272,7 @@ z-index: 0;
 section { padding: 40px 40px 50px 40px; }
 section:nth-child(even) { background: var(--bg2); }
 
-#diamondleague { padding-top: 30px; }
+#football { padding-top: 30px; }
 
 .section-header {
 display: flex; align-items: center;
@@ -458,7 +458,7 @@ margin-top: 6px;
 .hero-title { font-size: 28px; } 
 
 section { padding: 35px 24px; }
-#diamondleague { padding-top: 25px; }
+#football { padding-top: 25px; }
 
 .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
 
@@ -488,6 +488,7 @@ footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 
 <nav>
 <ul class="nav-links">
+<li><a href="#football" data-section="football">Football<span class="nav-dot"></span></a></li>
 <li><a href="#diamondleague" data-section="diamondleague">Diamond League 2026<span class="nav-dot"></span></a></li>
 <li><a href="#paris2024" data-section="paris2024">Paris 2024<span class="nav-dot"></span></a></li>
 <li><a href="#trackfield" data-section="trackfield">Athlétisme<span class="nav-dot"></span></a></li>
@@ -506,6 +507,7 @@ footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 </div>
 
 <div class="mobile-menu" id="mobile-menu">
+<a href="#football" class="mobile-link">Football</a>
 <a href="#diamondleague" class="mobile-link">Diamond League 2026</a>
 <a href="#paris2024" class="mobile-link">Paris 2024</a>
 <a href="#trackfield" class="mobile-link">Athlétisme</a>
@@ -530,6 +532,31 @@ footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 <p class="hero-sub">Photographe passionné de sports et d'astronomie.</p>
 </div>
 </div>
+
+<section id="football">
+<div class="section-header">
+<span class="section-title">Football</span>
+<div class="section-line"></div>
+<button class="section-toggle" aria-label="Afficher description">Détails<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+</div>
+<div class="section-desc">
+<p class="section-desc-inner">Clichés d'actions et de portraits capturés sur le terrain lors de rencontres de football.</p>
+</div>
+<div class="gallery">
+<div class="photo-item" data-src="photos/football/IMG_7916.webp"><img src="photos/football/IMG_7916.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_7616.webp"><img src="photos/football/IMG_7616.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_8216.webp"><img src="photos/football/IMG_8216.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_7928.webp"><img src="photos/football/IMG_7928.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_7613.webp"><img src="photos/football/IMG_7613.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_8221.webp"><img src="photos/football/IMG_8221.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_7925.webp"><img src="photos/football/IMG_7925.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_8226.webp"><img src="photos/football/IMG_8226.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_7617.webp"><img src="photos/football/IMG_7617.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_7924.webp"><img src="photos/football/IMG_7924.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_8212.webp"><img src="photos/football/IMG_8212.webp" alt="Football" loading="lazy" /></div>
+<div class="photo-item" data-src="photos/football/IMG_7930.webp"><img src="photos/football/IMG_7930.webp" alt="Football" loading="lazy" /></div>
+</div>
+</section>
 
 <section id="diamondleague">
 <div class="section-header">
@@ -671,6 +698,7 @@ Photographe sportif et astrophotographe basé à <strong>Versailles (78)</strong
 Mon objectif : capturer l'instant, l'effort, l'immensité du ciel. Ce portfolio rassemble des images réalisées entre 2024 et 2026, avec l'ambition de photographier de nombreux évènements futurs.
 </p>
 <div class="about-tags">
+<span class="tag">Football</span>
 <span class="tag">Athlétisme</span>
 <span class="tag">Running</span>
 <span class="tag">Astrophotographie</span>
