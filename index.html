@@ -311,6 +311,11 @@ filter: brightness(0.4) grayscale(0.2);
 transition: filter 0.3s ease, transform 0.3s ease;
 }
 
+/* Cadrage sur-mesure pour Diamond League */
+.hub-card-bg.dl-bg {
+background-position: center 20%;
+}
+
 .hub-card:hover .hub-card-bg {
 filter: brightness(0.6) grayscale(0);
 transform: scale(1.05);
@@ -625,7 +630,7 @@ footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 <span class="hub-card-title">Football</span>
 </a>
 <a href="#diamondleague" class="hub-card">
-<div class="hub-card-bg" style="background-image: url('photos/diamondleague/IMG_7195.webp');"></div>
+<div class="hub-card-bg dl-bg" style="background-image: url('photos/diamondleague/IMG_7195.webp');"></div>
 <span class="hub-card-title">Diamond League 2026</span>
 </a>
 <a href="#paris2024" class="hub-card">
