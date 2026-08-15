@@ -207,7 +207,7 @@ transition: color 0.2s;
 display: flex; 
 justify-content: center;
 align-items: center;
-min-height: 160px; 
+min-height: auto; 
 padding-top: var(--nav-h);
 position: relative;
 background: var(--bg);
@@ -223,15 +223,14 @@ align-items: center;
 justify-content: center;
 text-align: center;
 width: 100%;
-padding: 32px 40px;
-gap: 8px; 
+padding: 40px 40px 50px 40px;
+gap: 12px; 
 }
 
 .hero-socials-left {
 position: absolute;
 left: 40px;
-top: 50%;
-transform: translateY(-50%);
+top: 50px;
 display: flex;
 gap: 16px;
 }
@@ -262,6 +261,7 @@ color: var(--muted);
 letter-spacing: 0px;
 max-width: 600px;
 line-height: 1.4;
+margin-bottom: 12px;
 }
 
 .hero-bg-shared {
@@ -273,11 +273,68 @@ opacity: 0.15;
 z-index: 0;
 }
 
+/* ── CATEGORY HUB (GRILLE VISUELLE) ── */
+.category-hub {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 16px;
+width: 100%;
+max-width: 1100px;
+margin-top: 16px;
+}
+
+.hub-card {
+position: relative;
+height: 130px;
+border-radius: 6px;
+overflow: hidden;
+text-decoration: none;
+display: flex;
+align-items: center;
+justify-content: center;
+border: 1px solid rgba(255, 255, 255, 0.1);
+transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hub-card:hover {
+transform: translateY(-4px);
+border-color: var(--accent);
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hub-card-bg {
+position: absolute;
+inset: 0;
+background-size: cover;
+background-position: center;
+filter: brightness(0.4) grayscale(0.2);
+transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.hub-card:hover .hub-card-bg {
+filter: brightness(0.6) grayscale(0);
+transform: scale(1.05);
+}
+
+.hub-card-title {
+position: relative;
+z-index: 2;
+font-family: 'Bricolage Grotesque', sans-serif;
+font-variation-settings: 'wght' 700, 'wdth' 100;
+font-size: 15px;
+color: var(--cream);
+text-transform: uppercase;
+letter-spacing: 0.05em;
+text-align: center;
+padding: 0 10px;
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
 /* ── SECTIONS ── */
 section { padding: 40px 40px 50px 40px; }
 section:nth-child(even) { background: var(--bg2); }
 
-#football { padding-top: 30px; }
+#football { padding-top: 40px; }
 
 .section-header {
 display: flex; align-items: center;
@@ -458,6 +515,7 @@ font-family: 'Bricolage Grotesque', sans-serif;
 /* ── RESPONSIVE MOBILE ── */
 @media (max-width: 1024px) {
 .gallery { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.category-hub { grid-template-columns: repeat(3, 1fr); gap: 12px; }
 }
 
 @media (max-width: 768px) {
@@ -475,9 +533,17 @@ gap: 12px;
 position: static;
 transform: none;
 justify-content: center;
-margin-top: 6px;
+margin-top: 0;
 }
 .hero-title { font-size: 28px; } 
+
+.category-hub {
+grid-template-columns: repeat(2, 1fr);
+gap: 10px;
+margin-top: 12px;
+}
+.hub-card { height: 100px; }
+.hub-card-title { font-size: 12px; }
 
 section { padding: 35px 24px; }
 #football { padding-top: 25px; }
@@ -552,6 +618,33 @@ footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 </div>
 <h1 class="hero-title">noahbntt</h1>
 <p class="hero-sub">Photographe passionné de sports et d'astronomie.</p>
+
+<div class="category-hub">
+<a href="#football" class="hub-card">
+<div class="hub-card-bg" style="background-image: url('photos/football/IMG_7916.webp');"></div>
+<span class="hub-card-title">Football</span>
+</a>
+<a href="#diamondleague" class="hub-card">
+<div class="hub-card-bg" style="background-image: url('photos/diamondleague/IMG_7195.webp');"></div>
+<span class="hub-card-title">Diamond League 2026</span>
+</a>
+<a href="#paris2024" class="hub-card">
+<div class="hub-card-bg" style="background-image: url('photos/paris2024/IMG_2107.jpg');"></div>
+<span class="hub-card-title">Paris 2024</span>
+</a>
+<a href="#trackfield" class="hub-card">
+<div class="hub-card-bg" style="background-image: url('photos/trackfield/photo-5.jpg');"></div>
+<span class="hub-card-title">Athlétisme</span>
+</a>
+<a href="#running" class="hub-card">
+<div class="hub-card-bg" style="background-image: url('photos/running/IMG_1215.jpg');"></div>
+<span class="hub-card-title">Running</span>
+</a>
+<a href="#astrophoto" class="hub-card">
+<div class="hub-card-bg" style="background-image: url('photos/astrophoto/ngc70001.jpg');"></div>
+<span class="hub-card-title">Astrophotographie</span>
+</a>
+</div>
 </div>
 </div>
 
