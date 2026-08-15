@@ -311,9 +311,12 @@ filter: brightness(0.4) grayscale(0.2);
 transition: filter 0.3s ease, transform 0.3s ease;
 }
 
-/* Cadrage sur-mesure pour Diamond League */
+/* Cadrages sur-mesure */
 .hub-card-bg.dl-bg {
 background-position: center 10%;
+}
+.hub-card-bg.tf-bg {
+background-position: center 20%;
 }
 
 .hub-card:hover .hub-card-bg {
@@ -638,7 +641,7 @@ footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 <span class="hub-card-title">Paris 2024</span>
 </a>
 <a href="#trackfield" class="hub-card">
-<div class="hub-card-bg" style="background-image: url('photos/trackfield/photo-5.jpg');"></div>
+<div class="hub-card-bg tf-bg" style="background-image: url('photos/trackfield/photo-5.jpg');"></div>
 <span class="hub-card-title">Athlétisme</span>
 </a>
 <a href="#running" class="hub-card">
